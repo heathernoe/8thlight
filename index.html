@@ -63,19 +63,8 @@
         <div class="content-section-heading text-center">
           <h2 class="mb-5">Popular Books</h2>
         </div>
-        <div class="row no-gutters">
-          <div class="col-lg-4" id="content">
-            <a class="portfolio-item" href="#">
-              <span class="caption">
-                <span class="caption-content">
-                  <h2 id="title"></h2>
-                  <p class="mb-0" id="author"></p>
-                  <p class="mb-0" id="publisher"></p>
-                </span>
-              </span>
-              <img class="img-fluid" id="cover" src="" alt="">
-            </a>
-          </div>
+        <div class="row no-gutters" id="content">
+          
         </div>
       </div>
     </section>
@@ -104,14 +93,32 @@
     
     <!-- Google Books API Javascript &key=AIzaSyA0q8--SqOCiWRy-1ixKbwYDzgGEprsMUo -->
     <script>
+	  booksList = [];
 		
       function handleResponse(response) {
       for (var i = 0; i < response.items.length; i++) {
-        var item = response.items[i];
-        document.getElementById("title").innerHTML = item.volumeInfo.title;
-		document.getElementById("author").innerHTML = item.volumeInfo.authors;
-		document.getElementById("publisher").innerHTML = item.volumeInfo.publisher;
-		document.getElementById("cover").src = item.volumeInfo.imageLinks.thumbnail;
+		var item = response.items[i];
+
+        var title = item.volumeInfo.title;
+		var authors = item.volumeInfo.authors;
+		var publisher = item.volumeInfo.publisher;
+		var imgUrl = item.volumeInfo.imageLinks.thumbnail;
+		  
+		var result = document.createElement('div');
+		result.className = 'col-lg-4';
+		result.innerHTML =  
+            '<a class="portfolio-item" id="result" href="#">' +
+              '<span class="caption">' +
+                '<span class="caption-content">' +
+                  '<h2 id="title">' + title + '</h2>' +
+                  '<p class="mb-0" id="author">' + authors + '</p>' +
+                  '<p class="mb-0" id="publisher">' + publisher + '</p>' +
+                '</span>' +
+              '</span>' +
+              '<img class="img-fluid" id="cover" src="' + imgUrl + '" alt="">' +
+            '</a>';
+		document.getElementById("content").appendChild(result);
+		  
       }
     }
     </script>
