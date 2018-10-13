@@ -42,16 +42,16 @@
             <h1 class="mb-5">Google Books at Your Fingertips!</h1>
           </div>
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-            <form>
+            
               <div class="form-row">
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
-                  <input type="email" class="form-control form-control-lg" placeholder="search titles, authors, etc.">
+                  <input type="text" id="input" class="form-control form-control-lg" placeholder="search titles, authors, etc.">
                 </div>
                 <div class="col-12 col-md-3">
-					 <button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>
+               		<a class="btn btn-block btn-lg btn-primary" role="button" id="submit">Search</a>
                 </div>
               </div>
-            </form>
+            
           </div>
         </div>
       </div>
@@ -91,38 +91,104 @@
     <!-- Custom scripts for this template -->
     <script src="js/stylish-portfolio.min.js"></script>
     
-    <!-- Google Books API Javascript &key=AIzaSyA0q8--SqOCiWRy-1ixKbwYDzgGEprsMUo -->
-    <script>
-	  booksList = [];
-		
-      function handleResponse(response) {
-      for (var i = 0; i < response.items.length; i++) {
-		var item = response.items[i];
+    <!-- Google Books API Javascript o -->
+   
+   	<script>
 
-        var title = item.volumeInfo.title;
-		var authors = item.volumeInfo.authors;
-		var publisher = item.volumeInfo.publisher;
-		var imgUrl = item.volumeInfo.imageLinks.thumbnail;
-		  
-		var result = document.createElement('div');
-		result.className = 'col-lg-4';
-		result.innerHTML =  
-            '<a class="portfolio-item" id="result" href="#">' +
-              '<span class="caption">' +
-                '<span class="caption-content">' +
-                  '<h2 id="title">' + title + '</h2>' +
-                  '<p class="mb-0" id="author">' + authors + '</p>' +
-                  '<p class="mb-0" id="publisher">' + publisher + '</p>' +
-                '</span>' +
-              '</span>' +
-              '<img class="img-fluid" id="cover" src="' + imgUrl + '" alt="">' +
-            '</a>';
-		document.getElementById("content").appendChild(result);
-		  
-      }
-    }
-    </script>
-    <script src="https://www.googleapis.com/books/v1/volumes?q=harry+potter&callback=handleResponse"></script>
+		//info needed to reach api
+		const apiKey = 'AIzaSyA0q8--SqOCiWRy-1ixKbwYDzgGEprsMUo'; // shouldn't need this -- incorporate later if needed
+		const url = 'https://www.googleapis.com/books/v1/volumes'; 
+		const queryParams = '?q=';
+		
+		// select page elements
+		const inputField = document.querySelector('#input');
+		const submit = document.querySelector('#submit');
+		const content = document.querySelector('#content');
+		
+		// make the call
+		const getResults = () => {
+			const wordQuery = inputField.value;
+			const endpoint = `${url}${queryParams}${wordQuery}`;
+			
+			fetch(endpoint).then(response => {
+				if (response.ok) {
+					return response.json();
+				}
+				throw new Error('Request failed!');
+			}, networkError => {
+				console.log(networkError.message)
+			}).then(jsonResponse => {
+				renderResponse(jsonResponse);
+			} );
+		}
+		
+		// render results
+		const displayResults = (event) => {
+			getResults();
+		}
+		submit.addEventListener('click', displayResults);
+		
+		// helper functions
+		function createNode(element) {
+			return document.createElement(element);
+		}
+
+		function append(parent, el) {
+			return parent.appendChild(el);
+		}
+		
+		// Format response to look presentable on webpage
+		const renderResponse = (res) => {
+		  // Handle if res is falsey
+		  if(!res){
+			console.log(res.status);
+		  }
+		  // In case res comes back as a blank array
+		  if(!res.items.length){
+			content.innerHTML = "<p>Please try another search.</p><p>Our super computers couldn't find anything matching what you entered.</p>";
+			return;
+		  }
+
+			
+		  // Loop thru response and creates an div for each 
+		  for (var i = 0; i < res.items.length; i++) {
+        		var item = res.items[i];  
+	
+				// put the values into variables
+				var title = item.volumeInfo.title; 
+				var authors = item.volumeInfo.authors;
+				var publisher = item.volumeInfo.publisher;
+				var imgUrl = item.volumeInfo.imageLinks.thumbnail;
+			  
+			  	// create elements
+				let div = createNode('div'); 
+				div.className = 'col-lg-4';
+				div.innerHTML = 
+					'<a class="portfolio-item" id="result" href="#">' +
+					  '<span class="caption">' +
+						'<span class="caption-content">' +
+						  '<h2 id="title">' + title + '</h2>' +
+						  '<p class="mb-0" id="author">' + authors + '</p>' +
+						  '<p class="mb-0" id="publisher">' + publisher + '</p>' +
+						'</span>' +
+					  '</span>' +
+					  '<img class="img-fluid" id="cover" src="' + imgUrl + '" alt="">' +
+					'</a>';
+				append(document.getElementById('content'), div);  
+			}
+		}
+		
+		// make search work onclick
+		var input = document.getElementById("input");
+		input.addEventListener("keyup", function(event) {
+		  event.preventDefault();
+		  if (event.keyCode === 13) {
+			document.getElementById("submit").click();
+		  }
+		});
+
+		
+   	</script>
 
   </body>
 
