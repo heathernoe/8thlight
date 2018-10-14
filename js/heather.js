@@ -31,7 +31,7 @@ const displayResults = (event) => {
 }
 submit.addEventListener('click', displayResults);
 
-// helper functions
+// helper functions for creating UI
 function createNode(element) {
 	return document.createElement(element);
 }
@@ -58,11 +58,12 @@ const renderResponse = (res) => {
 		var item = res.items[i];  
 
 		// put the values into variables
-		var title = item.volumeInfo.title; 
-		var authors = item.volumeInfo.authors;
-		var publisher = item.volumeInfo.publisher;
-		var imgUrl = item.volumeInfo.imageLinks.thumbnail;
-		var infoUrl = item.volumeInfo.infoLink;
+	  	
+		var title = item.volumeInfo.title || ''; 
+		var authors = item.volumeInfo.authors || '';
+		var publisher = item.volumeInfo.publisher || '';
+		var imgUrl = item.volumeInfo.imageLinks.thumbnail || 'img/placeholder_book.png';
+		var infoUrl = item.volumeInfo.infoLink || '';
 
 		// create elements
 		let div = createNode('div'); 
