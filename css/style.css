@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  font-family: 'Source Sans Pro';
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .btn-xl {
@@ -43,6 +43,13 @@ h6 {
 
 .text-faded {
   color: rgba(255, 255, 255, 0.7);
+}
+
+.hidden {
+	display:none;
+}
+.visible {
+	display:block;
 }
 
 /* Map */
