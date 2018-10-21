@@ -18,7 +18,7 @@
     <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
 
   </head>
 
@@ -27,7 +27,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
       <div class="container">
-        <a class="navbar-brand" href="index.html"><img src="https://8thlight.com/images/logos/logo-color-ddaacb3d.svg" /></a>
+        <a class="navbar-brand" href="index.html"><img src="img/logo.png" /></a>
         <a href="http://heathernoe.com/" target="_blank">Heather Noe</a>
       </div>
     </nav>
@@ -39,7 +39,8 @@
         <div class="row">
           <div class="col-xl-9 mx-auto">
             <h1 class="mb-5">Google Books at Your Fingertips!</h1>
-          </div>
+            <div class="alert alert-danger hidden" role="alert" id="alert"></div>
+          </div> 
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
             
               <div class="form-row">
@@ -63,7 +64,7 @@
           <h2 class="mb-5" id="searchFeedback"></h2>
         </div>
         <div class="row no-gutters" id="content">
-          
+
         </div>
       </div>
     </section>
@@ -92,7 +93,8 @@
     
     <!-- Google Books API Javascript -->
    
-   	<script src="js/heather.js"></script>
+   	<script src="js/google_books.js"></script>
+   	<script src="js/ui_helpers.js"></script>
 
   </body>
 
